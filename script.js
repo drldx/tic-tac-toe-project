@@ -12,7 +12,6 @@ function GameBoard(){
 
   const drawToken = (row, col, player) => {
     if(board[row][col].getValue() !== ''){
-      console.log("returning");
       return 1;
     }else{
       board[row][col].addToken(player);
@@ -42,6 +41,7 @@ function Cell(){
 
 function GameController(playerOneName = "Player one", playerTwoName = "Player Two"){
   const board = GameBoard();
+  let round = 0;
 
   const players = [
     {
@@ -66,20 +66,60 @@ function GameController(playerOneName = "Player one", playerTwoName = "Player Tw
     board.printBoard();
   }
 
+  const checkGameStatus = () => {
+    const boardStatus = board.getBoard().map(row => row.map(cell => cell.getValue()));
+    const j = 0;
+
+    for(let i = 0; i < 3; i++){
+      if((boardStatus[i][j] === ("X") && boardStatus[i][j+1] === ("X") && boardStatus[i][j+2] === ("X")) || 
+        (boardStatus[i][j] === ("O") && boardStatus[i][j+1] === ("O") && boardStatus[i][j+2] === ("O")) ||
+
+        (boardStatus[j][i] === ("X") && boardStatus[j+1][i] === ("X") && boardStatus[j+2][i] === ("X")) ||
+        (boardStatus[j][i] === ("O") && boardStatus[j+1][i] === ("O") && boardStatus[j+2][i] === ("O")) ){
+
+        console.log("match found");
+        return 1;
+      }
+      else{
+        console.log("no match found")
+      }
+    }
+
+    if((boardStatus[j][j] === ("X") && boardStatus[j+1][j+1] === ("X") && boardStatus[j+2][j+2] === ("X") || 
+       (boardStatus[j][j] === ("O") && boardStatus[j+1][j+1] === ("O") && boardStatus[j+2][j+2] === ("O") ||
+
+       boardStatus[j][j+2] === ("X") && boardStatus[j+1][j+1] === ("X") && boardStatus[j+2][j] === ("X")) ||
+       boardStatus[j][j+2] === ("O") && boardStatus[j+1][j+1] === ("O") && boardStatus[j+2][j] === ("O")) ){
+
+      console.log('match found '+ getActivePlayer().name);
+      return 1;
+    }
+  }
+
   const playRound = (row, col) => {
 
+    ++round;
     const res = board.drawToken(row, col, getActivePlayer().token);
     if(res === 1){
       console.log("already taken, play again");
       return;
     }else{
       //check winner
-      switchPlayerTurn();
-      printNewRound();
+      let res = checkGameStatus();
+      if(res === 1){
+        console.log('game over');
+        return 1;
+      }else if(round === 9 && res === undefined){
+        console.log("its a tie");
+        return 2;
+      }else{
+        console.log(round);
+        switchPlayerTurn();
+        printNewRound();
+      } 
     }
   }
   
-
   return {
     playRound,
     getActivePlayer,
@@ -119,8 +159,18 @@ function displayController(){
 
     if(!rowIndex || !colIndex) return;
 
-    game.playRound(rowIndex, colIndex);
-    updateScreen();
+    let res = game.playRound(rowIndex, colIndex);
+    if(res === 1){
+      boardDiv.textContent = '';
+      playerTurnDiv.textContent = `Game Over.. ${game.getActivePlayer().name} Wins! `;
+      return;
+    }else if(res === 2){
+      boardDiv.textContent = '';
+      playerTurnDiv.textContent = `Its a tie! `;
+      return;
+    }else{
+      updateScreen();
+    }
   }
 
   boardDiv.addEventListener("click", clickHandler);

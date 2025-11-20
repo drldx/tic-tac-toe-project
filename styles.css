@@ -30,3 +30,8 @@ body{
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
 }
+
+.turn{
+  font-size: 1.5rem;
+  padding: 15px;
+}
