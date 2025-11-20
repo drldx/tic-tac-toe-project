@@ -8,13 +8,12 @@ function GameBoard(){
     }
   }
 
-  const getBoard = ()=> board;
+  const getBoard = () => board;
 
   const drawToken = (row, col, player) => {
-    console.log(board[row][col], player);
     if(board[row][col].getValue() !== ''){
       console.log("returning");
-      return;
+      return 1;
     } 
 
     board[row][col].addToken(player);
@@ -24,9 +23,11 @@ function GameBoard(){
     const boardWithCellValues = board.map(row => row.map(cell => cell.getValue()));
     console.log(boardWithCellValues);
   }
-  return {getBoard,
+  return {
+          getBoard,
           drawToken,
-          printBoard};
+          printBoard
+        };
 }
 
 function Cell(){
@@ -67,18 +68,27 @@ function GameController(playerOneName = "Player one", playerTwoName = "Player Tw
   }
 
   const playRound = (row, col) => {
-    console.log(`Marking ${getActivePlayer().name}'s token!`);
 
-    board.drawToken(row, col, getActivePlayer().token);
-    switchPlayerTurn();
-    printNewRound();
+    if((row < 0 || row > 2) || (col < 0 || col > 2)){
+      console.log("invalid indexes");
+      return;
+    }else{
+      console.log(`Marking ${getActivePlayer().name}'s token!`);
+
+      let res = board.drawToken(row, col, getActivePlayer().token);
+      if(res === 1){
+        console.log("already taken, play again");
+      }else{
+        switchPlayerTurn();
+        printNewRound();
+      }
+    }
   }
 
   return {
     playRound,
-    getActivePlayer
+    getActivePlayer,
   }
 }
 
 const game = GameController();
-game.playRound(0, 0);
