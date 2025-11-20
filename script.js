@@ -14,9 +14,9 @@ function GameBoard(){
     if(board[row][col].getValue() !== ''){
       console.log("returning");
       return 1;
+    }else{
+      board[row][col].addToken(player);
     } 
-
-    board[row][col].addToken(player);
   }
 
   const printBoard = ()=> {
@@ -64,31 +64,68 @@ function GameController(playerOneName = "Player one", playerTwoName = "Player Tw
 
   const printNewRound = () => {
     board.printBoard();
-    console.log(`${getActivePlayer().name}'s turn!`);
   }
 
   const playRound = (row, col) => {
 
-    if((row < 0 || row > 2) || (col < 0 || col > 2)){
-      console.log("invalid indexes");
+    const res = board.drawToken(row, col, getActivePlayer().token);
+    if(res === 1){
+      console.log("already taken, play again");
       return;
     }else{
-      console.log(`Marking ${getActivePlayer().name}'s token!`);
-
-      let res = board.drawToken(row, col, getActivePlayer().token);
-      if(res === 1){
-        console.log("already taken, play again");
-      }else{
-        switchPlayerTurn();
-        printNewRound();
-      }
+      //check winner
+      switchPlayerTurn();
+      printNewRound();
     }
   }
+  
 
   return {
     playRound,
     getActivePlayer,
+    getBoard: board.getBoard
   }
 }
 
-const game = GameController();
+function displayController(){
+  const game = GameController();
+
+  const playerTurnDiv = document.querySelector(".turn");
+  const boardDiv = document.querySelector(".board");
+
+  const updateScreen = ()=>{
+    boardDiv.textContent = '';
+
+    const board = game.getBoard();
+    const activePlayer = game.getActivePlayer();
+    playerTurnDiv.textContent = `${activePlayer.name}'s turn!`;
+
+    board.forEach((row, index) => {
+      const rowIndex = index;
+      row.forEach((cell, index) => {
+        const cellButton = document.createElement("button");
+        cellButton.classList.add("cell");
+        cellButton.dataset.row = rowIndex;
+        cellButton.dataset.column = index;
+        cellButton.textContent = cell.getValue();
+        boardDiv.appendChild(cellButton);
+      })
+    });
+  }
+
+  function clickHandler(e){
+    const rowIndex = e.target.dataset.row;
+    const colIndex = e.target.dataset.column;
+
+    if(!rowIndex || !colIndex) return;
+
+    game.playRound(rowIndex, colIndex);
+    updateScreen();
+  }
+
+  boardDiv.addEventListener("click", clickHandler);
+
+  updateScreen();
+}
+
+displayController();

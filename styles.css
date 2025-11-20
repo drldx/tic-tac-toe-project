@@ -8,3 +8,25 @@ body{
   color: white;
   background: black;
 }
+
+.container{
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+.cell{
+  width: 100px;
+  height: 100px;
+  font-size: 2rem;
+}
+
+.board{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+}
