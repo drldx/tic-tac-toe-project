@@ -56,7 +56,12 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 
   let activePlayer = players[0];
 
-  const getActivePlayer = () => activePlayer; 
+  const getActivePlayer = () => activePlayer;
+
+  const setPlayers = (one, two) => {
+    players[0].name = one;
+    players[1].name = two;
+  }
 
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0]
@@ -98,13 +103,14 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 
   const playRound = (row, col) => {
 
-    ++round;
     const res = board.drawToken(row, col, getActivePlayer().token);
     if(res === 1){
       console.log("already taken, play again");
       return;
     }else{
       //check winner
+      ++round;
+
       let res = checkGameStatus();
       if(res === 1){
         console.log('game over');
@@ -125,6 +131,7 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
   return {
     playRound,
     getActivePlayer,
+    setPlayers,
     getBoard: board.getBoard,
     setRound 
   }
@@ -135,9 +142,12 @@ function displayController(){
 
   const playerTurnDiv = document.querySelector(".turn");
   const boardDiv = document.querySelector(".board");
-  // const startBtn = document.querySelector(".startBtn");
-  // const restartBtn = document.querySelector(".restartBtn");
   const container = document.querySelector(".container");
+  const dialog = document.querySelector(".dialog");
+
+  const dialogButtons = document.querySelector(".dialogButtons");
+  const playerOne = document.querySelector("#player-one");
+  const playerTwo = document.querySelector("#player-two");
 
   const updateScreen = ()=>{
     boardDiv.textContent = '';
@@ -161,6 +171,7 @@ function displayController(){
 
   function clickHandler(e){
 
+
     const stateControl = () =>  {
       boardDiv.classList.remove("game");
       playerTurnDiv.classList.remove("game");
@@ -170,8 +181,28 @@ function displayController(){
       updateScreen();
     }
 
+    const setUsers = ()=> {
+      game.setPlayers(playerOne.value, playerTwo.value);
+    }
+
     if(e.target.classList.contains("startBtn")){
-      stateControl();
+      //boardDiv.textContent = '';
+      dialog.showModal();
+      dialogButtons.addEventListener("click", (e)=> {
+        if(e.target.classList.contains("submit")){
+          if(!playerOne.value || !playerTwo.value){
+            stateControl();
+            dialog.close();
+          }else{
+            setUsers();
+            stateControl();
+            dialog.close();
+          } 
+        }
+        if(e.target.classList.contains("close")){
+          dialog.close();
+        }
+      })
     }
 
     if(e.target.classList.contains("restartBtn")){

@@ -38,8 +38,7 @@ body{
   font-size: 1.5rem;
   padding: 15px;
   color: #f796f2;
-  font-weight: bold;
-  font-family: monospace;
+  font-family: sans-serif;
 }
 
 .game{
@@ -54,4 +53,11 @@ body{
   color: white;
   border: none;
   background-color: #411941;
+}
+
+dialog[open]{
+  display: grid;
+  gap: 10px;
+  padding: 25px 50px;
+  position-area: center;
 }
