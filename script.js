@@ -20,7 +20,6 @@ function GameBoard(){
 
   const printBoard = ()=> {
     const boardWithCellValues = board.map(row => row.map(cell => cell.getValue()));
-    console.log(boardWithCellValues);
   }
   return {
           getBoard,
@@ -82,11 +81,7 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         (boardStatus[j][i] === ("X") && boardStatus[j+1][i] === ("X") && boardStatus[j+2][i] === ("X")) ||
         (boardStatus[j][i] === ("O") && boardStatus[j+1][i] === ("O") && boardStatus[j+2][i] === ("O")) ){
 
-        console.log("match found");
         return 1;
-      }
-      else{
-        console.log("no match found")
       }
     }
 
@@ -96,7 +91,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
        boardStatus[j][j+2] === ("X") && boardStatus[j+1][j+1] === ("X") && boardStatus[j+2][j] === ("X")) ||
        boardStatus[j][j+2] === ("O") && boardStatus[j+1][j+1] === ("O") && boardStatus[j+2][j] === ("O")) ){
 
-      console.log('match found '+ getActivePlayer().name);
       return 1;
     }
   }
@@ -105,7 +99,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 
     const res = board.drawToken(row, col, getActivePlayer().token);
     if(res === 1){
-      console.log("already taken, play again");
       return;
     }else{
       //check winner
@@ -113,13 +106,10 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 
       let res = checkGameStatus();
       if(res === 1){
-        console.log('game over');
         return 1;
       }else if(round === 9 && res === undefined){
-        console.log("its a tie");
         return 2;
       }else{
-        console.log(round);
         switchPlayerTurn();
         printNewRound();
       } 
@@ -175,7 +165,6 @@ function displayController(){
     const stateControl = () =>  {
       boardDiv.classList.remove("game");
       playerTurnDiv.classList.remove("game");
-      console.log("clicked");
       game.setRound(0);
       game.getBoard().map(row => row.map(cell => cell.addToken("")));
       updateScreen();

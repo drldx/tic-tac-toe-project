@@ -7,6 +7,7 @@
 body{
   color: white;
   background: black;
+  font-family: "Science Gothic", sans-serif ;
 }
 
 .container{
@@ -19,13 +20,17 @@ body{
   margin: 0 auto;
 }
 
+h1{
+  color: #dfa2df;
+}
+
 .cell{
   border: 1px solid #e7b1df;
   width: 100px;
   height: 100px;
   font-size: 2rem;
   background-color: #f6cfff00;
-  color: #ea9ee1; 
+  color: #ffff;
 }
 
 .board{
@@ -34,11 +39,16 @@ body{
   justify-items: center;
 }
 
+.board button:hover{
+  cursor: pointer;
+  background-color: #ee82ee26;
+  transition: background-color 0.2s ease-out 0.2s;
+}
+
 .turn{
   font-size: 1.5rem;
   padding: 15px;
   color: #f796f2;
-  font-family: sans-serif;
 }
 
 .game{
@@ -47,17 +57,41 @@ body{
 
 .start-restart button{
   font-size: 1.3rem;
+  font-family: inherit;
   padding: 12px;
   margin: 15px 5px;
-  border-radius: 10px;
+  border-radius: 5px;
   color: white;
   border: none;
   background-color: #411941;
+  cursor: pointer;
 }
 
 dialog[open]{
   display: grid;
   gap: 10px;
-  padding: 25px 50px;
+  padding: 130px 80px;
   position-area: center;
+  font-size: 1.25rem;
+  background-color: black;
+  color: white;
+  border: 1px solid violet;
+}
+
+dialog button {
+  padding: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: #e98ce3; 
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+dialog input{
+  font-size: 1.1rem;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #ffff;
+  color: violet;
+  background-color: black;
 }
