@@ -20,9 +20,12 @@ body{
 }
 
 .cell{
+  border: 1px solid #e7b1df;
   width: 100px;
   height: 100px;
   font-size: 2rem;
+  background-color: #f6cfff00;
+  color: #ea9ee1; 
 }
 
 .board{
@@ -34,4 +37,21 @@ body{
 .turn{
   font-size: 1.5rem;
   padding: 15px;
+  color: #f796f2;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.game{
+  display: none;
+}
+
+.start-restart button{
+  font-size: 1.3rem;
+  padding: 12px;
+  margin: 15px 5px;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  background-color: #411941;
 }

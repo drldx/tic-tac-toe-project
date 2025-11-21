@@ -39,7 +39,7 @@ function Cell(){
   return {getValue, addToken};
 }
 
-function GameController(playerOneName = "Player one", playerTwoName = "Player Two"){
+function GameController(playerOneName = "Player One", playerTwoName = "Player Two"){
   const board = GameBoard();
   let round = 0;
 
@@ -119,11 +119,14 @@ function GameController(playerOneName = "Player one", playerTwoName = "Player Tw
       } 
     }
   }
+
+  const setRound = (count) => round = count;
   
   return {
     playRound,
     getActivePlayer,
-    getBoard: board.getBoard
+    getBoard: board.getBoard,
+    setRound 
   }
 }
 
@@ -132,6 +135,9 @@ function displayController(){
 
   const playerTurnDiv = document.querySelector(".turn");
   const boardDiv = document.querySelector(".board");
+  // const startBtn = document.querySelector(".startBtn");
+  // const restartBtn = document.querySelector(".restartBtn");
+  const container = document.querySelector(".container");
 
   const updateScreen = ()=>{
     boardDiv.textContent = '';
@@ -154,6 +160,24 @@ function displayController(){
   }
 
   function clickHandler(e){
+
+    const stateControl = () =>  {
+      boardDiv.classList.remove("game");
+      playerTurnDiv.classList.remove("game");
+      console.log("clicked");
+      game.setRound(0);
+      game.getBoard().map(row => row.map(cell => cell.addToken("")));
+      updateScreen();
+    }
+
+    if(e.target.classList.contains("startBtn")){
+      stateControl();
+    }
+
+    if(e.target.classList.contains("restartBtn")){
+      stateControl();
+    }
+
     const rowIndex = e.target.dataset.row;
     const colIndex = e.target.dataset.column;
 
@@ -173,7 +197,7 @@ function displayController(){
     }
   }
 
-  boardDiv.addEventListener("click", clickHandler);
+  container.addEventListener("click", clickHandler);
 
   updateScreen();
 }
